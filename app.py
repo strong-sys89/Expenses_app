@@ -1,16 +1,18 @@
 from flask import Flask, request, jsonify, render_template, session, redirect, url_for
-import mysql.connector
+import os
+import psycopg2
 
 # Initialisation Flask
 app = Flask(__name__)
 app.secret_key = "160706s240507k"  # clé secrète pour les sessions
 
-# Connexion MySQL
-db = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="",
-    database="expenses"
+# Connexion
+db = psycopg2.connect(
+    host=os.environ.get("PGHOST"),
+    user=os.environ.get("PGUSER"),
+    password=os.environ.get("PGPASSWORD"),
+    database=os.environ.get("PGDATABASE"),
+    port=os.environ.get("PGPORT")
 )
 cursor = db.cursor()
 
