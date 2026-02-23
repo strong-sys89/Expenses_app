@@ -2,3 +2,4 @@ flask
 mysql-connector-python
 gunicorn
 python-dotenv
+psycopg2-binary
