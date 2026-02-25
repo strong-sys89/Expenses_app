@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template, session, redirect, url_for
 import os
 import psycopg2
+from datetime import datetime
 
 # Initialisation Flask
 app = Flask(__name__)
@@ -115,9 +116,122 @@ def sum_depenses():
 
     user_id = user[0]
 
-    cursor.execute("SELECT SUM(Montant), DateDepense FROM depenses WHERE user_id=%s GROUP BY DateDepense ORDER BY DateDepense ASC", (user_id,))
+    cursor.execute("""
+        SELECT SUM(Montant), DateDepense
+        FROM depenses
+        WHERE user_id=%s
+        GROUP BY DateDepense
+        ORDER BY DateDepense ASC
+    """, (user_id,))
     rows = cursor.fetchall()
     return jsonify(rows)
+
+@app.route("/hebdo_sum", methods=["GET"])
+def hebdo_sum():
+    if "username" not in session:
+        return jsonify({"error": "Vous devez être connecté"}), 403
+
+    cursor.execute("SELECT id FROM utilisateur WHERE username=%s", (session["username"],))
+    user = cursor.fetchone()
+    if not user:
+        return jsonify({"error": "Utilisateur introuvable"}), 404
+
+    user_id = user[0]
+
+    cursor.execute("""
+        SELECT DATE_TRUNC('week', DateDepense) AS semaine,
+               SUM(Montant) AS total
+        FROM depenses
+        WHERE user_id=%s
+        GROUP BY semaine
+        ORDER BY semaine ASC
+    """, (user_id,))
+    rows = cursor.fetchall()
+
+    formatted = []
+    for semaine, total in rows:
+        formatted.append([total, semaine.strftime("%a, %d %b %Y")])
+
+    return jsonify(formatted)
+
+@app.route("/mens_sum", methods=["GET"])
+def mens_sum():
+    if "username" not in session:
+        return jsonify({"error": "Vous devez être connecté"}), 403
+
+    cursor.execute("SELECT id FROM utilisateur WHERE username=%s", (session["username"],))
+    user = cursor.fetchone()
+    if not user:
+        return jsonify({"error": "Utilisateur introuvable"}), 404
+
+    user_id = user[0]
+
+    cursor.execute("""
+        SELECT DATE_TRUNC('month', DateDepense) AS mois,
+               SUM(Montant) AS total
+        FROM depenses
+        WHERE user_id=%s
+        GROUP BY mois
+        ORDER BY mois ASC
+    """, (user_id,))
+    rows = cursor.fetchall()
+
+    formatted = []
+    for mois, total in rows:
+        formatted.append([total, mois.strftime("%a, %d %b %Y")])
+
+    return jsonify(formatted)
+
+@app.route("/ann_sum", methods=["GET"])
+def ann_sum():
+    if "username" not in session:
+        return jsonify({"error": "Vous devez être connecté"}), 403
+
+    cursor.execute("SELECT id FROM utilisateur WHERE username=%s", (session["username"],))
+    user = cursor.fetchone()
+    if not user:
+        return jsonify({"error": "Utilisateur introuvable"}), 404
+
+    user_id = user[0]
+
+    cursor.execute("""
+        SELECT DATE_TRUNC('year', DateDepense) AS annee,
+               SUM(Montant) AS total
+        FROM depenses
+        WHERE user_id=%s
+        GROUP BY annee
+        ORDER BY annee ASC
+    """, (user_id,))
+    rows = cursor.fetchall()
+
+    formatted = []
+    for annee, total in rows:
+        formatted.append([total, annee.strftime("%a, %d %b %Y")])
+
+    return jsonify(formatted)
+
+@app.route("/depenses_par_date", methods=["GET"])
+def depenses_par_date():
+    if "username" not in session:
+        return jsonify({"error": "Vous devez être connecté"}), 403
+
+    date = request.args.get("date")
+    cursor.execute("SELECT id FROM utilisateur WHERE username=%s", (session["username"],))
+    user = cursor.fetchone()
+    if not user:
+        return jsonify({"error": "Utilisateur introuvable"}), 404
+
+    user_id = user[0]
+
+    cursor.execute("""
+        SELECT Description, Categorie, Montant, DateDepense
+        FROM depenses
+        WHERE user_id=%s AND DateDepense=%s
+    """, (user_id, date))
+    rows = cursor.fetchall()
+
+    return jsonify(rows)
+
 
 # ------------------ Lancement ------------------
 if __name__ == '__main__':
