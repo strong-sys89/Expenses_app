@@ -4,7 +4,9 @@
 }
 body{
     display: flex;
-    gap: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 100%;
     background: gray;
     margin: 0;
@@ -16,8 +18,9 @@ body{
     justify-content: space-between;
     background: rgba(0, 0, 0, 1);
     position: fixed;
+    top: 0;
     width: 100%;
-    height: 80px;
+    height: 100px;
     color: #f9f9f9;
     padding: 1rem 1.5rem;
     z-index: 2;
@@ -37,13 +40,13 @@ a{
 .container{
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 97%;
     border: 1px solid #000;
     padding: 1.5rem 1rem;
     border-radius: 15px;
     background: rgba(255, 255, 255, .3);
     backdrop-filter: blur(15px);
-    margin: 6rem 0 0 0;
+    margin: 8rem 0 0;
     gap: 1rem;
 }
 .expense-management{
@@ -94,6 +97,19 @@ table{
     width: 100%;
     margin-bottom: 1rem;
 }
+th{
+    background: black;
+    color: #fff;
+}
+td:nth-child(4){
+    text-align: right;
+}
+/*.table-show{
+    visibility: hidden;
+}
+.table-show.active{
+    visibility: visible;
+}*/
 .daily-expense{
     display: none;
 }
@@ -107,7 +123,7 @@ ul{
     position: absolute;
     background-color: rgba(255, 255, 255, .8);
     top: 0;
-    left: -2500px;
+    transform: translateX(-100%);
     width: 100%;
     height: 100vh;
     display: flex;
@@ -118,19 +134,22 @@ ul{
     margin-top: 2rem;
 }
 ul li{
-    margin: 20px 0;
+    margin: 10px 0;
 }
 ul li a{
     text-transform: uppercase;
 }
 ul.active{
-    left: 0;
+    transform: translateX(0);
+    transition: 1000ms;
 }
 
 .button{
     width: 50px;
     height: 50px;
-    position: relative;
+    position: absolute;
+    top: 30px;
+    right: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
