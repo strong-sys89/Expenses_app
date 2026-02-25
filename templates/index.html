@@ -10,7 +10,7 @@
         <div class="title">Build by Strong</div>
         <div class="right">
             <a href="{{ url_for('logout') }}">
-                <button class="logout"> <-Logout</button>
+                <button class="logout">← Logout</button>
             </a>
         </div>
     </header>
@@ -22,7 +22,7 @@
                 <select name="categorie">
                     <option value="">--</option>
                     <option value="food">Food</option>
-                    <option value="tp">Transport</option>
+                    <option value="transport">Transport</option>
                     <option value="epargne">Epargne</option>
                     <option value="loisirs">Loisirs</option>
                     <option value="school">School</option>
@@ -34,7 +34,7 @@
             </form>
         </div>
         <div class="list-container">
-            <table border="1px" cellpadding="10px">
+            <table border="1px" cellpadding="10px" class="table-show">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -47,7 +47,7 @@
                 <tbody id="liste"></tbody>
             </table>
             <div class="daily-expense">
-                <h2>Bilan Journalier</h2>
+                <h2 class="e-title"></h2>
                 <table border="1px" cellpadding="10px">
                     <thead>
                         <tr>
@@ -66,11 +66,18 @@
     </div>
     <div class="button"></div>
     <ul class="menu">
+        <li><h2>Dépenses</h2></li>
+        <li>
+            <input type="date" class="date">
+            <button class="select-e">Select</button>
+        </li>
+        <li><button class="all-e">All</button></li>
+        <br>
         <li><h2>BILAN</h2></li>
-        <li><button class="daily">Journalier</button></li>
-        <li><button class="hebdo">Hebdomadaire</button></li>
-        <li><button class="mensuel">Mensuel</button></li>
-        <li><button class="annuel">Annuel</button></li>
+        <li><button class="daily-b">Journalier</button></li>
+        <li><button class="hebdo-b">Hebdomadaire</button></li>
+        <li><button class="mensuel-b">Mensuel</button></li>
+        <li><button class="annuel-b">Annuel</button></li>
     </ul>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
