@@ -18,8 +18,8 @@
         <div class="expense-management">
             <h1>Expenses Management</h1>
             <form method="POST">
-                <input type="text" name="description" placeholder="Description">
-                <select name="categorie">
+                <input type="text" name="description" placeholder="Description" required>
+                <select name="categorie" required>
                     <option value="">--</option>
                     <option value="food">Food</option>
                     <option value="transport">Transport</option>
@@ -28,8 +28,8 @@
                     <option value="school">School</option>
                     <option value="imprevus">Imprévus</option>
                 </select>
-                <input type="number" name="montant" placeholder="Montant">
-                <input type="date" name="date" placeholder="Date">
+                <input type="number" name="montant" placeholder="Montant" required>
+                <input type="date" name="date" placeholder="Date" required>
                 <button class="btn-submit">Ajouter</button>
             </form>
         </div>
